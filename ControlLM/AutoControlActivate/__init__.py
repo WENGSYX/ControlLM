@@ -7,7 +7,6 @@ import re
 import openai
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-openai.api_key  = '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'
 client = OpenAI(
     # This is the default and can be omitted
     #api_key=os.environ.get("OPENAI_API_KEY"),
