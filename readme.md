@@ -15,8 +15,8 @@
 
 This repository contains code, models, and other related resources of our paper ["ControlLM: Crafting Diverse Personalities for Language Models"](https://arxiv.org/abs/2304.01665).
 
-* [2023/02/15] We have published the paper!
-* [2023/02/14] We created the Github library!
+* [2024/02/15] We have published the paper!
+* [2024/02/14] We created the Github library!
 
 ****
 
