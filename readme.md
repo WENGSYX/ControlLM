@@ -13,7 +13,7 @@
 
 **[Contact]** If you have any questions, feel free to contact me via (wengsyx@gmail.com).
 
-This repository contains code, models, and other related resources of our paper ["ControlLM: Crafting Diverse Personalities for Language Models"](https://arxiv.org/abs/2304.01665).
+This repository contains code, models, and other related resources of our paper ["ControlLM: Crafting Diverse Personalities for Language Models"](https://arxiv.org/abs/2402.10151).
 
 * [2024/02/15] We have published the paper!
 * [2024/02/14] We created the Github library!
@@ -171,12 +171,10 @@ model.get_and_save_activations(dataset=datasets, save_path=path)
 
 ###### If you are interested in our paper, please feel free to cite it.
 ```
-@misc{weng2023mastering,
-      title={Mastering Symbolic Operations: Augmenting Language Models with Compiled Neural Networks}, 
-      author={Yixuan Weng and Minjun Zhu and Fei Xia and Bin Li and Shizhu He and Kang Liu and Jun Zhao},
-      year={2023},
-      eprint={2304.01665},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@article{weng2024controllm,
+  title={ControlLM: Crafting Diverse Personalities for Language Models},
+  author={Weng, Yixuan and He, Shizhu and Liu, Kang and Liu, Shengping and Zhao, Jun},
+  journal={arXiv preprint arXiv:2402.10151},
+  year={2024}
 }
 ```
