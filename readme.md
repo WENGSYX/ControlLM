@@ -15,6 +15,7 @@
 
 This repository contains code, models, and other related resources of our paper ["ControlLM: Crafting Diverse Personalities for Language Models"](https://arxiv.org/abs/2402.10151).
 
+* [2024/11/06] We supported the Llama-3, Llama-3.1, Llama-3.2!
 * [2024/02/15] We have published the paper!
 * [2024/02/14] We created the Github library!
 
@@ -38,6 +39,7 @@ To run neural comprehension, you need to install `PyTorch` and`transformers`.
 from ControlLM.llama import get_model
 
 model, tokenizer = get_model(model_name='meta-llama/Llama-2-7b-chat-hf')
+# model, tokenizer = get_model(model_name='meta-llama/Llama-3.2-1B')
 ```
 
 ControlLM supports `Llama` and `Falcon` models. If you need to use the `Falcon` model, just replace `ControlLM.llama` with `ControlLM.falcon`.
