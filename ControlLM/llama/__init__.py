@@ -15,31 +15,13 @@
 # ==============================================================================
 """The model file for llama and llama-2"""
 
-import json
-import random
 import os
-import sys
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from datasets import load_dataset
-from tqdm import tqdm
-import numpy as np
-import pandas as pd
-import warnings
-from einops import rearrange
-from transformers import AutoTokenizer, AutoModelForCausalLM
-import pickle
-from functools import partial
+
 import torch
 from torch.utils.data import Dataset
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from tqdm import tqdm
 from tqdm.rich import tqdm
-import os
-import matplotlib
-
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
 
 def get_model(model_name='meta-llama/Llama-2-7b-chat-hf',control_activate_name=None,control_layer=None,gamma=None):
@@ -176,9 +158,13 @@ def get_model(model_name='meta-llama/Llama-2-7b-chat-hf',control_activate_name=N
                 layer.after_position = pos
 
         def prompt_to_tokens(self, instruction):
+            self.system_prompt = 'You are a helpful, honest and concise assistant.'
+            if self.tokenizer.chat_template != None:
+                dialog_tokens = self.tokenizer.apply_chat_template([{'role':'system','content':self.system_prompt},{'role':'user','content':instruction.strip()}])
+                return torch.tensor(dialog_tokens).unsqueeze(0)
             B_INST, E_INST = "[INST]", "[/INST]"
             B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
-            self.system_prompt = 'You are a helpful, honest and concise assistant.'
+
             dialog_content = B_SYS + self.system_prompt + E_SYS + instruction.strip()
             dialog_tokens = self.tokenizer.encode(
                 f"{B_INST} {dialog_content.strip()} {E_INST}"
@@ -194,7 +180,10 @@ def get_model(model_name='meta-llama/Llama-2-7b-chat-hf',control_activate_name=N
             tokenizer = model.tokenizer
             tokenizer.pad_token = '[PAD]'
             stop_id = tokenizer.sep_token_id
+
             pad_id = tokenizer.pad_token_id
+            if pad_id == None:
+                pad_id = tokenizer.bos_token_id
 
             device = model.device
             input_ids = []
@@ -263,6 +252,12 @@ def get_model(model_name='meta-llama/Llama-2-7b-chat-hf',control_activate_name=N
             system_prompt = "You are a helpful, honest and concise assistant."
 
             def prompt_to_tokens(tokenizer, system_prompt, instruction, model_output):
+                if tokenizer.chat_template != None: # Llama 3 Instrcut
+                    dialog_tokens = self.tokenizer.apply_chat_template(
+                        [{'role': 'system', 'content': system_prompt},
+                         {'role': 'user', 'content': instruction.strip()},
+                         {'role': 'assistant', 'content': model_output.strip()}])[:-5]
+                    return torch.tensor(dialog_tokens).unsqueeze(0)
                 B_INST, E_INST = "[INST]", "[/INST]"
                 B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
                 dialog_content = B_SYS + system_prompt + E_SYS + instruction.strip()
